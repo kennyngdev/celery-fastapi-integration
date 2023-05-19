@@ -1,14 +1,14 @@
 from typing import Union
-from task_queue import tasks
+from worker import tasks
 from celery.result import AsyncResult
 from fastapi import FastAPI
 from pydantic import BaseModel
-from task_queue.tasks import wait_10_sec
+from worker.tasks import example_task
 
 app = FastAPI()
 
 
-class InputDto(BaseModel):
+class ExampleInputModel(BaseModel):
     message: str = ''
 
 
@@ -17,14 +17,14 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.post("/run_task")
-def run_task(input_dto: InputDto):
+@app.post("/example_task")
+def run_task(input_dto: ExampleInputModel):
     json_body = input_dto.dict()
-    result = wait_10_sec.delay(json_body)
+    result = example_task.delay(json_body)
     return {'task_id': result.id}
 
 
-@app.get("/task_status")
+@app.get("/status")
 def get_task_status(task_id):
     task_result = AsyncResult(id=task_id)
     res = {
@@ -34,11 +34,11 @@ def get_task_status(task_id):
     return res
 
 
-@app.get("/tasK_result")
+@app.get("/result")
 def get_result(task_id):
     task_result = AsyncResult(task_id)
     result = {
         "id": task_id,
-        "task_result": task_result.result
+        "task_result": task_result.get()
     }
     return result
