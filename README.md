@@ -1,34 +1,41 @@
-# FastAPI Celery Integration Example
+# FastAPI and Celery Integration Example
 
-## Forword
-I created this repository to show a barebone implementation of integrating FastAPI with Celery. 
-Unlike other repositories on GitHub demonstrating the same possibility, 
-flower is not used in this one as I wanted to make it as simple as it can be.
+## Introduction
+This repository provides a stripped-down demonstration of how to integrate FastAPI with Celery. To keep things straightforward and accessible, this example does not utilize Flower, differentiating it from other similar examples available on GitHub.
 
-In this example, rabbitmq is used as the message broker and redis is used as the result backend.
+In this scenario, RabbitMQ serves as the message broker, while Redis functions as the result backend. We also illustrate how to incorporate async functions within Celery tasks.
 
-Also, I added an example on how async function can be used on celery.
+## Setup and Installation
+### Using Docker 
+1. To host the project, start by building the Docker images for Celery and the API, using the commands below:
 
-## Project Setup
-### Docker Build
-You can host the project by running the following commands:
-```
-# build image for celery
-docker build . -f worker.Dockerfile -t worker
-# build image for api
-docker build . -f api.Dockerfile -t api 
-# host celery, fastapi, rabbitmq and redis containers together
-docker-compose up -d --build
-```
-After hosting the containers on Docker, you can go to http://localhost:8000/docs to go the swagger UI or just call the API directly.
+    ```
+    # Build the Celery image
+    docker build . -f worker.Dockerfile -t worker
 
-## Usage
-By trigger the `POST run_task` endpoint, a task which takes 10 second will be trigger. A task ID will be issued for tracking progress and getting result.
+    # Build the API image
+    docker build . -f api.Dockerfile -t api 
+    ```
 
-`GET status` can be used to track the status of a task with its ID.
+2. Next, to spin up the Celery, FastAPI, RabbitMQ, and Redis containers together, use the following command:
 
-`GET result` can be used to get the result of the task.
+    ```
+    # Host the containers
+    docker-compose up -d --build
+    ```
+   
+3. After initializing the Docker containers, access the Swagger UI at http://localhost:8000/docs or interact with the API directly.
 
-## Contact
-Please give the repo a star if you like it!
-This app is written by Kenny Ng (contact@kennyng.dev).
+## How to Use
+This API offers three main endpoints:
+
+- `POST run_task`: Triggers a task that takes approximately 10 seconds to complete. Upon initiating this task, a unique task ID is generated for tracking progress and retrieving results.
+
+- `GET status`: Allows users to track the status of a specific task using its ID.
+
+- `GET result`: Retrieves the result of a completed task using its ID.
+
+## Support
+If you find this project useful, please consider giving the repository a star! 
+
+For any queries or feedback, reach out to the author, Kenny Ng, at contact@kennyng.dev.
