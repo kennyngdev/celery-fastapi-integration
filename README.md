@@ -5,6 +5,8 @@ This repository provides a stripped-down demonstration of how to integrate FastA
 
 In this scenario, RabbitMQ serves as the message broker, while Redis functions as the result backend. We also illustrate how to incorporate async functions within Celery tasks.
 
+(In `rpc-backend` branch, I also make an alternative in which rpc is used instead of redis for the result backend. Here is a brief comparison from the official celery documentation: https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/index.html)
+
 ## Setup and Installation
 ### Using Docker 
 1. To host the project, start by building the Docker images for Celery and the API, using the commands below:
