@@ -3,7 +3,7 @@ from asgiref.sync import async_to_sync
 import asyncio
 
 # Initializing celery app
-app = Celery('tasks', backend='redis://redis:6379', broker='pyamqp://rabbitmq:5672')
+app = Celery('tasks', backend='rpc://', broker='pyamqp://rabbitmq:5672')
 app.set_default()
 app.conf.update(task_track_started=True)
 app.conf.update(result_persistent=True)
